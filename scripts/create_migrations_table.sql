@@ -1,0 +1,8 @@
+DROP TABLE IF EXISTS public.migrations CASCADE;
+
+CREATE TABLE IF NOT EXISTS public.migrations (
+  id SERIAL PRIMARY KEY,
+  name TEXT NOT NULL UNIQUE,
+  batch INTEGER NOT NULL,
+  executed_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
