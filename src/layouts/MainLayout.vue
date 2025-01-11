@@ -3,7 +3,7 @@
     <q-header elevated>
       <q-toolbar>
         <q-toolbar-title>
-          <div>Quasar v{{ $q.version }}</div>
+          <div>Servinder</div>
         </q-toolbar-title>
       </q-toolbar>
     </q-header>

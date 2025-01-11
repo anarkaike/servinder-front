@@ -1,6 +1,15 @@
 {
   "extends": "@quasar/app-vite/tsconfig-preset",
   "compilerOptions": {
+    "target": "ES2022",                           // Certifique-se de que o alvo suporta ESM
+    "module": "ESNext",                           // Suporte para import/export moderno
+    "moduleResolution": "node",                   // Resolução de módulos no estilo Node.js
+    "esModuleInterop": true,                      // Facilita importações do estilo CommonJS/ESM
+    "allowSyntheticDefaultImports": true,         // Permite importações de padrão em ESM/CJS mistos
+    "strict": true,                               // Ativa checagem estrita de tipos
+    "noImplicitAny": true,                        // Evita "implícito any" para segurança de tipos
+    "resolveJsonModule": true,                    // Permite importar arquivos JSON
+    "lib": ["ES2022", "DOM"],                     // Inclusão de bibliotecas modernas
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"],
@@ -12,7 +21,7 @@
       "@database/*": ["src/database/*"],
       "@models/*": ["src/database/models/*"],
       "@utils/*": ["src/database/utils/*"],
-      "@migrations/*": ["src/database/migrations/*"]
+      "@migrations/*": ["src/database/migrations/*"],
     },
     "typeRoots": ["./node_modules/@types", "./src/types"],
     "types": [
@@ -30,7 +39,8 @@
     "src/**/*.vue",
     "./*.d.ts",
     "./*.ts",
-    "vite.config.ts"
+    "vite.config.ts",
+    "quasar.config.ts"                            // Garanta que o TypeScript veja
   ],
   "exclude": [
     "node_modules",

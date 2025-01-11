@@ -1,13 +1,14 @@
 // Configuration for your app
 // https://v2.quasar.dev/quasar-cli-vite/quasar-config-file
 
-import { defineConfig } from '@quasar/app-vite/wrappers';
+// @ts-ignore
+import { defineConfig } from '#q-app/wrappers';
 import { fileURLToPath } from 'node:url';
 
-export default defineConfig((ctx) => {
+export default defineConfig((ctx: any) => {
   return {
     // https://v2.quasar.dev/quasar-cli-vite/prefetch-feature
-    // preFetch: true,
+    preFetch: true,
 
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
@@ -53,7 +54,7 @@ export default defineConfig((ctx) => {
         '@migrations': fileURLToPath(new URL('./src/database/migrations', import.meta.url)),
         '@components': fileURLToPath(new URL('./src/components', import.meta.url)),
       },
-      extendViteConf(viteConf) {
+      extendViteConf(viteConf: any): void {
         Object.assign(viteConf.resolve.alias, {
           '@/*': fileURLToPath(new URL('./src', import.meta.url)),
           '@boot': fileURLToPath(new URL('./src/boot', import.meta.url)),
@@ -76,7 +77,7 @@ export default defineConfig((ctx) => {
         vue: {
           template: {
             compilerOptions: {
-              isCustomElement: (tag) => tag.includes('-')
+              isCustomElement: (tag: any) => tag.includes('-')
             }
           }
         }
@@ -85,9 +86,9 @@ export default defineConfig((ctx) => {
         strict: true,
         vueShim: true
       },
-      vueRouterMode: 'hash', // available values: 'hash', 'history'
+      vueRouterMode: 'history', // available values: 'hash', 'history'
       // vueRouterBase,
-      // vueDevtools,
+      vueDevtools: true,
       // vueOptionsAPI: false,
 
       // rebuildCache: true, // rebuilds Vite/linter/etc cache on startup
@@ -129,10 +130,9 @@ export default defineConfig((ctx) => {
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#framework
     framework: {
-      config: {},
 
       // iconSet: 'material-icons', // Quasar icon set
-      // lang: 'en-US', // Quasar language pack
+      lang: 'pt-BR', // Quasar language pack
 
       // For special cases outside of where the auto-import strategy can have an impact
       // (like functional components as one of the examples),
@@ -142,12 +142,26 @@ export default defineConfig((ctx) => {
       // directives: [],
 
       // Quasar plugins
-      plugins: ['Notify']
+      plugins: ['Notify'],
+
+      config: {
+        brand: {
+          primary: '#4c0687', // Cor primária
+          secondary: '#23ac63', // Cor secundária
+          accent: '#1149b3', // Cor de destaque
+
+          dark: '#1d1d1d', // Usada como tema escuro
+          positive: '#21ba45', // Para mensagens positivas
+          negative: '#c10015', // Para mensagens negativas/erros
+          info: '#31ccec', // Informações
+          warning: '#f2c037' // Alertas
+        }
+      }
     },
 
-    // animations: 'all', // --- includes all animations
+    animations: 'all', // --- includes all animations
     // https://v2.quasar.dev/options/animations
-    animations: [],
+    // animations: [],
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#sourcefiles
     // sourceFiles: {
@@ -188,12 +202,12 @@ export default defineConfig((ctx) => {
 
     // https://v2.quasar.dev/quasar-cli-vite/developing-pwa/configuring-pwa
     pwa: {
-      workboxMode: 'GenerateSW' // 'GenerateSW' or 'InjectManifest'
-      // swFilename: 'sw.js',
-      // manifestFilename: 'manifest.json',
+      workboxMode: 'GenerateSW', // 'GenerateSW' or 'InjectManifest'
+      swFilename: 'sw.js',
+      manifestFilename: 'manifest.json',
       // extendManifestJson (json) {},
-      // useCredentialsForManifestTag: true,
-      // injectPwaMetaTags: false,
+      useCredentialsForManifestTag: true,
+      injectPwaMetaTags: false,
       // extendPWACustomSWConf (esbuildConf) {},
       // extendGenerateSWOptions (cfg) {},
       // extendInjectManifestOptions (cfg) {}
