@@ -1,3 +1,12 @@
+import { pgTable, uuid, timestamp } from 'drizzle-orm/pg-core';
+
+export const Entity = {
+  id: uuid('id').primaryKey().defaultRandom(),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+  updatedAt: timestamp('updated_at').defaultNow().notNull(),
+  deletedAt: timestamp('deleted_at'),
+};
+
 export type ColumnType = 'text' | 'integer' | 'float' | 'boolean' | 'uuid' | 'timestamp' | 'jsonb'
 
 export type OnDeleteAction = 'CASCADE' | 'SET NULL' | 'RESTRICT'

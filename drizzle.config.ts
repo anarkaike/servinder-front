@@ -3,11 +3,14 @@ import * as dotenv from 'dotenv'
 dotenv.config()
 
 export default {
-  schema: './src/db/schema.ts',
+  schema: './src/database/entities/*.ts',
   out: './drizzle',
   dialect: 'postgresql',
-  driver: 'pg',
+  driver: 'turso',
   dbCredentials: {
-    connectionString: process.env.SUPABASE_URL || ''
-  }
+    url: process.env.SUPABASE_URL || '',
+    authToken: process.env.SUPABASE_ANON_KEY || ''
+  },
+  verbose: true,
+  strict: true
 } satisfies Config

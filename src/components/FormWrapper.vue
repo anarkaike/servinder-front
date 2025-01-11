@@ -1,6 +1,6 @@
 <template>
   <div class="form-wrapper">
-    <q-form @submit="onSubmit" class="q-gutter-md">
+    <q-form @submit.prevent="onSubmit" class="q-gutter-md">
       <template v-for="field in fields" :key="field.name">
         <q-input
           v-model="formData[field.name]"
@@ -54,16 +54,30 @@ const emit = defineEmits(['update:modelValue', 'submit'])
 
 const formData = ref({ ...props.modelValue })
 
-watch(() => props.modelValue, (newVal) => {
-  formData.value = { ...newVal }
-})
+// Atualiza formData quando modelValue (parâmetro externo) mudar
+watch(
+  () => props.modelValue,
+  (newVal) => {
+    // Só atualiza se os valores forem realmente diferentes
+    if (JSON.stringify(formData.value) !== JSON.stringify(newVal)) {
+      formData.value = { ...newVal }
+    }
+  },
+  { deep: true }
+)
 
-watch(formData, (newVal) => {
-  emit('update:modelValue', newVal)
-}, { deep: true })
+// Sincroniza mudanças em formData de volta para o pai (com modelValue)
+watch(
+  formData,
+  (newVal) => {
+    emit('update:modelValue', newVal)
+  },
+  { deep: true }
+)
 
+// Submissão do formulário, disparando o evento 'submit'
 const onSubmit = () => {
-  emit('submit', formData.value)
+  emit('submit', { ...formData.value })
 }
 </script>
 

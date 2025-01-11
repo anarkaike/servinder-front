@@ -1,7 +1,7 @@
-import { ref, computed } from "vue";
-import { useRouter } from "vue-router";
-import { User } from "../database/models/User";
-import { Notify } from "quasar";
+import {computed, ref} from "vue";
+import {useRouter} from "vue-router";
+import {Notify} from "quasar";
+import {User} from "../database/models/User";
 
 const currentUser = ref<any>(null)
 const loading = ref(false)
@@ -26,13 +26,11 @@ export function useAuth() {
   async function login(credentials: { email: string; password: string }) {
     try {
       loading.value = true
-      await User.signIn(credentials)
-      await loadUser()
-      
+      const signedInUser = await User.signIn(credentials)
+      currentUser.value = signedInUser
       // Verifica se existe uma rota de redirecionamento
       const redirect = router.currentRoute.value.query.redirect as string
       router.push(redirect || '/admin')
-      
       Notify.create({
         type: 'positive',
         message: 'Login realizado com sucesso!'
@@ -51,9 +49,8 @@ export function useAuth() {
 
   async function register(data: { email: string; password: string; name: string }) {
     try {
-      console.log('aaa Junio');
       loading.value = true
-      await User.signUp(data)
+      const newUser = await User.signUp(data)
       Notify.create({
         type: 'positive',
         message: 'Cadastro realizado com sucesso! Verifique seu email para confirmar a conta.'

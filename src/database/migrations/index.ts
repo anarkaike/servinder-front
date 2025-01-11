@@ -8,6 +8,7 @@ import { FixAuthTrigger } from './fix_auth_trigger.js'
 import { VerifyUsersTable } from './verify_users_table.js'
 import { FixUserMetadata } from './fix_user_metadata.js'
 import { RecreateTesteTable } from './recreate_teste_table.js'
+import { CreateTenantsAndRelations } from './0021_create_tenants_and_relations.js'
 
 export function getMigrations(): Migration[] {
   const migrations = new Map<string, Migration>()
@@ -38,6 +39,9 @@ export function getMigrations(): Migration[] {
 
   // Recriar tabela de teste com RLS
   migrations.set('recreate_teste_table', new RecreateTesteTable())
+
+  // Criar estrutura de tenancy
+  migrations.set('create_tenants_and_relations', new CreateTenantsAndRelations())
 
   return Array.from(migrations.values())
 }

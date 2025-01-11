@@ -1,51 +1,23 @@
 import { User, UserModel } from '../models/User';
 
 export class UserService {
-  private users: User[] = [];
-
   async createUser(userData: Omit<User, 'id' | 'createdAt' | 'updatedAt'>): Promise<User> {
-    const newUser = new UserModel({
-      ...userData,
-      id: crypto.randomUUID(),
-      createdAt: new Date(),
-      updatedAt: new Date()
-    });
-    
-    this.users.push(newUser);
-    return newUser;
+    return UserModel.create(userData);
   }
 
-  async getUserById(id: string): Promise<User | undefined> {
-    return this.users.find(user => user.id === id);
+  async getUserById(id: string): Promise<User | null> {
+    return UserModel.getById(id);
   }
 
-  async updateUser(id: string, userData: Partial<User>): Promise<User | undefined> {
-    const userIndex = this.users.findIndex(user => user.id === id);
-    if (userIndex === -1) return undefined;
-
-    const currentUser = this.users[userIndex]!;
-    const updatedUser = new UserModel({
-      id: currentUser.id,
-      name: userData.name ?? currentUser.name,
-      email: userData.email ?? currentUser.email,
-      password: userData.password ?? currentUser.password,
-      createdAt: currentUser.createdAt,
-      updatedAt: new Date()
-    });
-
-    this.users[userIndex] = updatedUser;
-    return updatedUser;
+  async updateUser(id: string, userData: Partial<User>): Promise<User> {
+    return UserModel.update(id, userData);
   }
 
-  async deleteUser(id: string): Promise<boolean> {
-    const userIndex = this.users.findIndex(user => user.id === id);
-    if (userIndex === -1) return false;
-
-    this.users.splice(userIndex, 1);
-    return true;
+  async deleteUser(id: string): Promise<void> {
+    return UserModel.delete(id);
   }
 
   async getAllUsers(): Promise<User[]> {
-    return this.users;
+    return UserModel.getAll();
   }
 }

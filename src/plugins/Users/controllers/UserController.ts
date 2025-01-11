@@ -1,4 +1,5 @@
 import { UserService } from '../services/UserService';
+import { User } from '../models/User';
 
 export class UserController {
   private userService: UserService;
@@ -7,48 +8,50 @@ export class UserController {
     this.userService = new UserService();
   }
 
-  async create(req: any, res: any) {
+  async create(userData: Omit<User, 'id' | 'createdAt' | 'updatedAt'>) {
     try {
-      const user = await this.userService.createUser(req.body);
-      return res.status(201).json(user);
+      const user = await this.userService.createUser(userData);
+      return user;
     } catch (error) {
-      return res.status(400).json({ error: 'Error creating user' });
+      throw new Error('Error creating user');
     }
   }
 
-  async getById(req: any, res: any) {
+  async getById(id: string) {
     try {
-      const user = await this.userService.getUserById(req.params.id);
+      const user = await this.userService.getUserById(id);
       if (!user) {
-        return res.status(404).json({ error: 'User not found' });
+        throw new Error('User not found');
       }
-      return res.status(200).json(user);
+      return user;
     } catch (error) {
-      return res.status(400).json({ error: 'Error fetching user' });
+      throw new Error('Error fetching user');
     }
   }
 
-  async update(req: any, res: any) {
+  async update(id: string, userData: Partial<User>) {
     try {
-      const user = await this.userService.updateUser(req.params.id, req.body);
-      if (!user) {
-        return res.status(404).json({ error: 'User not found' });
-      }
-      return res.status(200).json(user);
+      const user = await this.userService.updateUser(id, userData);
+      return user;
     } catch (error) {
-      return res.status(400).json({ error: 'Error updating user' });
+      throw new Error('Error updating user');
     }
   }
 
-  async delete(req: any, res: any) {
+  async delete(id: string) {
     try {
-      const deleted = await this.userService.deleteUser(req.params.id);
-      if (!deleted) {
-        return res.status(404).json({ error: 'User not found' });
-      }
-      return res.status(204).send();
+      await this.userService.deleteUser(id);
     } catch (error) {
-      return res.status(400).json({ error: 'Error deleting user' });
+      throw new Error('Error deleting user');
+    }
+  }
+
+  async getAll() {
+    try {
+      const users = await this.userService.getAllUsers();
+      return users;
+    } catch (error) {
+      throw new Error('Error fetching users');
     }
   }
 }

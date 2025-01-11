@@ -1,45 +1,54 @@
 import { eq } from 'drizzle-orm'
 import { supabase } from '@boot/supabase'
-import { User as UserEntity } from '@database/entities/User'
+import { user, User as UserType } from '@database/entities/User'
 
-export interface UserAttributes {
-  id: string
+export interface UserCredentials {
   email: string
+  password: string
   name: string
-  avatar_url?: string
-  created_at?: string
-  updated_at?: string
 }
 
 export class User {
-  static async getCurrentUser(): Promise<UserAttributes | null> {
-    const { data: { user } } = await supabase.auth.getUser()
-    if (!user) return null
+  static async getCurrentUser(): Promise<UserType | null> {
+    const { data: { user: authUser } } = await supabase.auth.getUser()
+    if (!authUser) return null
 
     const { data } = await supabase
-      .from(UserEntity.table)
+      .from('users')
       .select()
-      .eq('id', user.id)
+      .eq('id', authUser.id)
       .single()
 
     return data
   }
 
-  static async signUp(credentials: { email: string; password: string; name: string }) {
-    const { data: { user }, error: signUpError } = await supabase.auth.signUp({
+  static async signUp(credentials: UserCredentials) {
+    const { data: { user: authUser }, error: signUpError } = await supabase.auth.signUp({
       email: credentials.email,
       password: credentials.password,
       options: {
         data: {
-          user_metadata: {
-            name: credentials.name
-          }
+          name: credentials.name
         }
       }
     })
 
     if (signUpError) throw signUpError
-    return user
+
+    // Criar o usuário na tabela users
+    const { data: userData, error: userError } = await supabase
+      .from('users')
+      .insert({
+        id: authUser?.id,
+        email: credentials.email,
+        name: credentials.name,
+      })
+      .select()
+      .single()
+
+    if (userError) throw userError
+
+    return userData
   }
 
   static async signIn(credentials: { email: string; password: string }) {
@@ -57,28 +66,24 @@ export class User {
     if (error) throw error
   }
 
-  static async update(id: string, data: Partial<UserAttributes>) {
-    const { data: updated, error } = await supabase
-      .from(UserEntity.table)
+  static async update(id: string, data: Partial<UserType>) {
+    const { data: userData, error } = await supabase
+      .from('users')
       .update(data)
       .eq('id', id)
       .select()
       .single()
 
     if (error) throw error
-    return updated
+    return userData
   }
 
-  static async updatePassword(password: string) {
-    const { error } = await supabase.auth.updateUser({
-      password
-    })
+  static async delete(id: string) {
+    const { error } = await supabase
+      .from('users')
+      .delete()
+      .eq('id', id)
 
-    if (error) throw error
-  }
-
-  static async resetPassword(email: string) {
-    const { error } = await supabase.auth.resetPasswordForEmail(email)
     if (error) throw error
   }
 }

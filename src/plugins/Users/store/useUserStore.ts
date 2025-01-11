@@ -63,7 +63,7 @@ export const useUserStore = defineStore('users', {
       }
     },
 
-    async createUser(userData: Partial<User>) {
+    async createUser(userData: Omit<User, 'id' | 'createdAt' | 'updatedAt'>) {
       this.loading = true
       this.error = null
       try {
@@ -85,15 +85,9 @@ export const useUserStore = defineStore('users', {
       try {
         const userService = new UserService()
         const updatedUser = await userService.updateUser(userId, userData)
-        if (!updatedUser) {
-          throw new Error('User not found')
-        }
-        const index = this.users.findIndex(user => user.id === userId)
+        const index = this.users.findIndex(u => u.id === userId)
         if (index !== -1) {
           this.users[index] = updatedUser
-        }
-        if (this.currentUser?.id === userId) {
-          this.currentUser = updatedUser
         }
         return updatedUser
       } catch (error) {
@@ -110,9 +104,9 @@ export const useUserStore = defineStore('users', {
       try {
         const userService = new UserService()
         await userService.deleteUser(userId)
-        this.users = this.users.filter(user => user.id !== userId)
-        if (this.currentUser?.id === userId) {
-          this.currentUser = null
+        const index = this.users.findIndex(u => u.id === userId)
+        if (index !== -1) {
+          this.users.splice(index, 1)
         }
       } catch (error) {
         this.error = (error as Error).message

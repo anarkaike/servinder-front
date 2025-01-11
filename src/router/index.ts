@@ -1,11 +1,12 @@
-import { defineRouter } from '#q-app/wrappers';
+import { route } from 'quasar/wrappers';
 import {
-  createMemoryHistory,
   createRouter,
-  createWebHashHistory,
+  createMemoryHistory,
   createWebHistory,
+  createWebHashHistory,
 } from 'vue-router';
 import routes from './routes';
+import { tenantDomainMiddleware } from '../middleware/TenantDomainMiddleware';
 
 /*
  * If not building with SSR mode, you can
@@ -16,7 +17,7 @@ import routes from './routes';
  * with the Router instance.
  */
 
-export default defineRouter(function (/* { store, ssrContext } */) {
+export default route(function (/* { store, ssrContext } */) {
   const createHistory = process.env.SERVER
     ? createMemoryHistory
     : (process.env.VUE_ROUTER_MODE === 'history' ? createWebHistory : createWebHashHistory);
@@ -30,6 +31,9 @@ export default defineRouter(function (/* { store, ssrContext } */) {
     // quasar.conf.js -> build -> publicPath
     history: createHistory(process.env.VUE_ROUTER_BASE),
   });
+
+  // Adiciona o middleware de domínio
+  Router.beforeEach(tenantDomainMiddleware);
 
   return Router;
 });
