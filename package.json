@@ -19,7 +19,8 @@
     "migrate:reset": "ts-node --esm --project src/tsconfig.json scripts/migrate.ts reset",
     "migrate:refresh": "ts-node --esm --project src/tsconfig.json scripts/migrate.ts refresh",
     "create-exec-sql": "ts-node --esm --project src/tsconfig.json scripts/create_exec_sql_function.ts",
-    "migrate:init": "ts-node --esm --project src/tsconfig.json scripts/create_migrations_table.ts"
+    "migrate:init": "ts-node --esm --project src/tsconfig.json scripts/create_migrations_table.ts",
+    "create-policies": "ts-node --esm --project src/tsconfig.json scripts/create_users_policies.ts"
   },
   "dependencies": {
     "@quasar/extras": "^1.16.4",
@@ -29,14 +30,17 @@
     "node-fetch": "^3.3.2",
     "pinia": "^2.0.11",
     "quasar": "^2.16.0",
+    "quasar-form-generator": "^1.1.2",
     "vue": "^3.4.18",
     "vue-i18n": "^9.2.2",
     "vue-router": "^4.0.12"
   },
   "devDependencies": {
     "@intlify/unplugin-vue-i18n": "^2.0.0",
-    "@quasar/app-vite": "^2.0.0",
+    "@quasar/app-vite": "^2.0.5",
     "@types/node": "^20.17.11",
+    "@vue/runtime-core": "^3.5.13",
+    "@vue/runtime-dom": "^3.5.13",
     "autoprefixer": "^10.4.2",
     "drizzle-kit": "^0.30.1",
     "ts-node": "^10.9.2",

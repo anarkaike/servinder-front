@@ -1,3 +1,32 @@
 {
-  "extends": "./.quasar/tsconfig.json"
+  "extends": "./.quasar/tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"],
+      "@boot/*": ["./src/boot/*"],
+      "@database/*": ["./src/database/*"],
+      "@models/*": ["./src/database/models/*"],
+      "@utils/*": ["./src/database/utils/*"],
+      "@migrations/*": ["./src/database/migrations/*"]
+    },
+    "types": [
+      "node",
+      "vite/client",
+      "@vue/runtime-core",
+      "@vue/runtime-dom",
+      "quasar"
+    ]
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.vue",
+    "./*.d.ts",
+    "./*.ts",
+    "vite.config.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
 }

@@ -1,11 +1,12 @@
 import { RouteRecordRaw } from 'vue-router';
 import { requireAuth, requireGuest } from './middleware/auth'
+import { handleAuthCallback } from './middleware/handleAuthCallback'
 
 const routes: RouteRecordRaw[] = [
   {
-    path: '/',
+    path: '/admin',
     component: () => import('layouts/MainLayout.vue'),
-    beforeEnter: requireAuth,
+    beforeEnter: [handleAuthCallback, requireAuth],
     children: [
       { 
         path: '', 
@@ -16,7 +17,7 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/',
     component: () => import('layouts/AuthLayout.vue'),
-    beforeEnter: requireGuest,
+    beforeEnter: [handleAuthCallback, requireGuest],
     children: [
       {
         path: 'login',

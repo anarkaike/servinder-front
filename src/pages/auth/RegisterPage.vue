@@ -64,7 +64,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useAuth } from 'src/composables/useAuth'
+import { useAuth } from "../../composables/useAuth"
 
 const { register, loading } = useAuth()
 const showPassword = ref(false)

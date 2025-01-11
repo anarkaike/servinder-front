@@ -1,7 +1,7 @@
 // Configuration for your app
 // https://v2.quasar.dev/quasar-cli-vite/quasar-config-file
 
-import { defineConfig } from '#q-app/wrappers';
+import { defineConfig } from '@quasar/app-vite/wrappers';
 import { fileURLToPath } from 'node:url';
 
 export default defineConfig((ctx) => {
@@ -15,7 +15,8 @@ export default defineConfig((ctx) => {
     boot: [
       'i18n',
       'axios',
-      'supabase'
+      'supabase',
+      'quasar-form-generator'
     ],
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#css
@@ -40,16 +41,50 @@ export default defineConfig((ctx) => {
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#build
     build: {
       target: {
-        browser: [ 'es2022', 'firefox115', 'chrome115', 'safari14' ],
+        browser: ['es2022', 'firefox115', 'chrome115', 'safari14'],
         node: 'node20'
       },
-
+      alias: {
+        '@/*': fileURLToPath(new URL('./src', import.meta.url)),
+        '@boot': fileURLToPath(new URL('./src/boot', import.meta.url)),
+        '@database': fileURLToPath(new URL('./src/database', import.meta.url)),
+        '@models': fileURLToPath(new URL('./src/database/models', import.meta.url)),
+        '@utils': fileURLToPath(new URL('./src/database/utils', import.meta.url)),
+        '@migrations': fileURLToPath(new URL('./src/database/migrations', import.meta.url)),
+        '@components': fileURLToPath(new URL('./src/components', import.meta.url)),
+      },
+      extendViteConf(viteConf) {
+        Object.assign(viteConf.resolve.alias, {
+          '@/*': fileURLToPath(new URL('./src', import.meta.url)),
+          '@boot': fileURLToPath(new URL('./src/boot', import.meta.url)),
+          '@database': fileURLToPath(new URL('./src/database', import.meta.url)),
+          '@models': fileURLToPath(new URL('./src/database/models', import.meta.url)),
+          '@utils': fileURLToPath(new URL('./src/database/utils', import.meta.url)),
+          '@migrations': fileURLToPath(new URL('./src/database/migrations', import.meta.url)),
+          '@components': fileURLToPath(new URL('./src/components', import.meta.url))
+        })
+      },
+      vite: {
+        optimizeDeps: {
+          include: ['vue', 'vue-router', 'quasar', '@supabase/supabase-js']
+        },
+        esbuild: {
+          jsx: 'preserve',
+          jsxFactory: 'h',
+          jsxFragment: 'Fragment'
+        },
+        vue: {
+          template: {
+            compilerOptions: {
+              isCustomElement: (tag) => tag.includes('-')
+            }
+          }
+        }
+      },
       typescript: {
         strict: true,
         vueShim: true
-        // extendTsConfig (tsConfig) {}
       },
-
       vueRouterMode: 'hash', // available values: 'hash', 'history'
       // vueRouterBase,
       // vueDevtools,
@@ -68,7 +103,7 @@ export default defineConfig((ctx) => {
 
       // extendViteConf (viteConf) {},
       // viteVuePluginOptions: {},
-      
+
       vitePlugins: [
         ['@intlify/unplugin-vue-i18n/vite', {
           // if you want to use Vue I18n Legacy API, you need to set `compositionOnly: false`
@@ -81,7 +116,7 @@ export default defineConfig((ctx) => {
           ssr: ctx.modeName === 'ssr',
 
           // you need to set i18n resource including paths !
-          include: [ fileURLToPath(new URL('./src/i18n', import.meta.url)) ]
+          include: [fileURLToPath(new URL('./src/i18n', import.meta.url))]
         }]
       ]
     },
@@ -130,7 +165,7 @@ export default defineConfig((ctx) => {
     // https://v2.quasar.dev/quasar-cli-vite/developing-ssr/configuring-ssr
     ssr: {
       prodPort: 3000, // The default port that the production server should use
-                      // (gets superseded if process.env.PORT is specified at runtime)
+      // (gets superseded if process.env.PORT is specified at runtime)
 
       middlewares: [
         'render' // keep this as last one
@@ -182,7 +217,7 @@ export default defineConfig((ctx) => {
       // extendPackageJson (json) {},
 
       // Electron preload scripts (if any) from /src-electron, WITHOUT file extension
-      preloadScripts: [ 'electron-preload' ],
+      preloadScripts: ['electron-preload'],
 
       // specify the debugging port to use for the Electron app when running in development mode
       inspectPort: 5858,

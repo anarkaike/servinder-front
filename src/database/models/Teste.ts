@@ -1,6 +1,6 @@
 import { eq } from 'drizzle-orm'
-import { supabase } from 'src/boot/supabase'
-import { teste } from 'src/db/schema'
+import { supabase } from '@boot/supabase'
+import { teste } from '@database/db/schema'
 
 export class Teste {
   static async all() {

@@ -4,6 +4,10 @@ import { entities } from '../entities/index.js'
 import { CreateAuditsTable } from './create_audits_table.js'
 import { CreateAuthTrigger } from './create_auth_trigger.js'
 import { AlterAuditsUserId } from './alter_audits_user_id.js'
+import { FixAuthTrigger } from './fix_auth_trigger.js'
+import { VerifyUsersTable } from './verify_users_table.js'
+import { FixUserMetadata } from './fix_user_metadata.js'
+import { CreateTesteTable } from './create_teste_table.js'
 
 export function getMigrations(): Migration[] {
   const migrations = new Map<string, Migration>()
@@ -20,8 +24,20 @@ export function getMigrations(): Migration[] {
   // Alterar a coluna user_id da tabela de auditorias
   migrations.set('alter_audits_user_id', new AlterAuditsUserId())
 
-  // Última migration: criar o trigger de autenticação
+  // Criar o trigger de autenticação
   migrations.set('create_auth_trigger', new CreateAuthTrigger())
+
+  // Corrigir o trigger de autenticação e políticas
+  migrations.set('fix_auth_trigger', new FixAuthTrigger())
+
+  // Verificar e corrigir a tabela users
+  migrations.set('verify_users_table', new VerifyUsersTable())
+
+  // Corrigir o caminho dos metadados do usuário
+  migrations.set('fix_user_metadata', new FixUserMetadata())
+
+  // Criar tabela de teste com RLS
+  migrations.set('create_teste_table', new CreateTesteTable())
 
   return Array.from(migrations.values())
 }

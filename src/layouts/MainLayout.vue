@@ -1,21 +1,10 @@
 <template>
-  <q-layout view="lHh Lpr lFf">
+  <q-layout view="lHh lpr lFf">
     <q-header elevated>
       <q-toolbar>
-        <q-btn
-          flat
-          dense
-          round
-          icon="menu"
-          aria-label="Menu"
-          @click="toggleLeftDrawer"
-        />
-
         <q-toolbar-title>
-          Quasar App
+          <div>Quasar v{{ $q.version }}</div>
         </q-toolbar-title>
-
-        <div>Quasar v{{ $q.version }}</div>
       </q-toolbar>
     </q-header>
 
@@ -38,7 +27,7 @@
             <q-icon name="logout" />
           </q-item-section>
           <q-item-section>
-            <q-item-label>Sair</q-item-label>
+            Sair
           </q-item-section>
         </q-item>
       </q-list>
@@ -51,9 +40,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import EssentialLink from 'components/EssentialLink.vue';
-import { useAuth } from 'src/composables/useAuth';
+import { ref } from "vue";
+import EssentialLink from "../components/EssentialLink.vue";
+import { useAuth } from "../composables/useAuth";
 
 const { logout } = useAuth();
 

@@ -1,6 +1,6 @@
 import { eq } from 'drizzle-orm'
-import { supabase } from 'src/boot/supabase'
-import { users } from 'src/db/schema'
+import { supabase } from '@boot/supabase'
+import { User as UserEntity } from '@database/entities/User'
 
 export interface UserAttributes {
   id: string
@@ -17,7 +17,7 @@ export class User {
     if (!user) return null
 
     const { data } = await supabase
-      .from('users')
+      .from(UserEntity.table)
       .select()
       .eq('id', user.id)
       .single()
@@ -28,23 +28,17 @@ export class User {
   static async signUp(credentials: { email: string; password: string; name: string }) {
     const { data: { user }, error: signUpError } = await supabase.auth.signUp({
       email: credentials.email,
-      password: credentials.password
+      password: credentials.password,
+      options: {
+        data: {
+          user_metadata: {
+            name: credentials.name
+          }
+        }
+      }
     })
 
     if (signUpError) throw signUpError
-
-    if (user) {
-      const { error: profileError } = await supabase
-        .from('users')
-        .insert({
-          id: user.id,
-          email: credentials.email,
-          name: credentials.name
-        })
-
-      if (profileError) throw profileError
-    }
-
     return user
   }
 
@@ -65,7 +59,7 @@ export class User {
 
   static async update(id: string, data: Partial<UserAttributes>) {
     const { data: updated, error } = await supabase
-      .from('users')
+      .from(UserEntity.table)
       .update(data)
       .eq('id', id)
       .select()
