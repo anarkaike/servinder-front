@@ -45,23 +45,23 @@ export default defineConfig((ctx: any) => {
         browser: ['es2022', 'firefox115', 'chrome115', 'safari14'],
         node: 'node20'
       },
-      alias: {
-        '@/*': fileURLToPath(new URL('./src', import.meta.url)),
-        '@boot': fileURLToPath(new URL('./src/boot', import.meta.url)),
-        '@database': fileURLToPath(new URL('./src/database', import.meta.url)),
-        '@models': fileURLToPath(new URL('./src/database/models', import.meta.url)),
-        '@utils': fileURLToPath(new URL('./src/database/utils', import.meta.url)),
-        '@migrations': fileURLToPath(new URL('./src/database/migrations', import.meta.url)),
+      alias: {// @ts-ignore
+        '@/*': fileURLToPath(new URL('./src', import.meta.url)),// @ts-ignore
+        '@boot': fileURLToPath(new URL('./src/boot', import.meta.url)),// @ts-ignore
+        '@database': fileURLToPath(new URL('./src/database', import.meta.url)),// @ts-ignore
+        '@models': fileURLToPath(new URL('./src/database/models', import.meta.url)),// @ts-ignore
+        '@utils': fileURLToPath(new URL('./src/database/utils', import.meta.url)),// @ts-ignore
+        '@migrations': fileURLToPath(new URL('./src/database/migrations', import.meta.url)),// @ts-ignore
         '@components': fileURLToPath(new URL('./src/components', import.meta.url)),
       },
       extendViteConf(viteConf: any): void {
-        Object.assign(viteConf.resolve.alias, {
-          '@/*': fileURLToPath(new URL('./src', import.meta.url)),
-          '@boot': fileURLToPath(new URL('./src/boot', import.meta.url)),
-          '@database': fileURLToPath(new URL('./src/database', import.meta.url)),
-          '@models': fileURLToPath(new URL('./src/database/models', import.meta.url)),
-          '@utils': fileURLToPath(new URL('./src/database/utils', import.meta.url)),
-          '@migrations': fileURLToPath(new URL('./src/database/migrations', import.meta.url)),
+        Object.assign(viteConf.resolve.alias, {// @ts-ignore
+          '@/*': fileURLToPath(new URL('./src', import.meta.url)),// @ts-ignore
+          '@boot': fileURLToPath(new URL('./src/boot', import.meta.url)),// @ts-ignore
+          '@database': fileURLToPath(new URL('./src/database', import.meta.url)),// @ts-ignore
+          '@models': fileURLToPath(new URL('./src/database/models', import.meta.url)),// @ts-ignore
+          '@utils': fileURLToPath(new URL('./src/database/utils', import.meta.url)),// @ts-ignore
+          '@migrations': fileURLToPath(new URL('./src/database/migrations', import.meta.url)),// @ts-ignore
           '@components': fileURLToPath(new URL('./src/components', import.meta.url))
         })
       },
@@ -117,6 +117,7 @@ export default defineConfig((ctx: any) => {
           ssr: ctx.modeName === 'ssr',
 
           // you need to set i18n resource including paths !
+          // @ts-ignore
           include: [fileURLToPath(new URL('./src/i18n', import.meta.url))]
         }]
       ]
