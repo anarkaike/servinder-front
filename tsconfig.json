@@ -1,49 +1,32 @@
 {
   "extends": "@quasar/app-vite/tsconfig-preset",
   "compilerOptions": {
-    "target": "ES2022",                           // Certifique-se de que o alvo suporta ESM
-    "module": "ESNext",                           // Suporte para import/export moderno
-    "moduleResolution": "node",                   // Resolução de módulos no estilo Node.js
-    "esModuleInterop": true,                      // Facilita importações do estilo CommonJS/ESM
-    "allowSyntheticDefaultImports": true,         // Permite importações de padrão em ESM/CJS mistos
-    "strict": true,                               // Ativa checagem estrita de tipos
-    "noImplicitAny": true,                        // Evita "implícito any" para segurança de tipos
-    "resolveJsonModule": true,                    // Permite importar arquivos JSON
-    "lib": ["ES2022", "DOM"],                     // Inclusão de bibliotecas modernas
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "noImplicitAny": true,
+    "resolveJsonModule": true,
+    "lib": ["ES2022", "DOM"],
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"],
-      "@boot/*": ["src/boot/*"],
-      "@components/*": ["src/components/*"],
-      "@layouts/*": ["src/layouts/*"],
-      "@pages/*": ["src/pages/*"],
-      "@stores/*": ["src/stores/*"],
-      "@database/*": ["src/database/*"],
-      "@models/*": ["src/database/models/*"],
-      "@utils/*": ["src/database/utils/*"],
-      "@migrations/*": ["src/database/migrations/*"],
+      "@boot/*": ["src/boot/*"]
     },
-    "typeRoots": ["./node_modules/@types", "./src/types"],
-    "types": [
-      "node",
-      "vite/client",
-      "@vue/runtime-core",
-      "@vue/runtime-dom",
-      "quasar"
-    ]
+    "types": ["node", "vite/client"]
   },
   "include": [
     "src/**/*.ts",
-    "src/**/*.d.ts",
     "src/**/*.tsx",
     "src/**/*.vue",
-    "./*.d.ts",
-    "./*.ts",
-    "vite.config.ts",
-    "quasar.config.ts"                            // Garanta que o TypeScript veja
+    "test/**/*.ts",
+    "*.d.ts"
   ],
   "exclude": [
     "node_modules",
-    "dist"
+    "dist",
+    ".quasar"
   ]
 }

@@ -12,15 +12,15 @@ if (!supabaseUrl || !supabaseKey) {
 
 const supabase = createClient(supabaseUrl, supabaseKey);
 
-async function migrate() {
+async function generateMigration() {
   try {
     const runner = migrationRunner(supabase);
-    await runner.runMigrations();
-    console.log('Migrations completed successfully');
+    await runner.generateMigrations();
+    console.log('Migration files generated successfully');
   } catch (error) {
-    console.error('Error running migrations:', error);
+    console.error('Error generating migration files:', error);
     process.exit(1);
   }
 }
 
-migrate();
+generateMigration();

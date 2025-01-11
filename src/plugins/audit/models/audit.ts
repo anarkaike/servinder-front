@@ -1,4 +1,4 @@
-import { BaseEntity, ColumnType, Policy, OnDeleteAction } from './Entity.js'
+import { BaseEntity, ColumnType, Policy, OnDeleteAction } from './Entity'
 
 export class Audit extends BaseEntity {
   name = 'Audit'
