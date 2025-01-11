@@ -100,14 +100,18 @@ const formFields = [
 
 // Carregar itens
 const loadItems = async () => {
+  console.log('Iniciando carregamento de itens...')
   try {
     const data = await Teste.all()
+    console.log('Dados recebidos:', data)
     items.value = data
   } catch (error) {
     console.error('Erro ao carregar itens:', error)
     Notify.create({
       type: 'negative',
-      message: 'Erro ao carregar itens'
+      message: 'Erro ao carregar itens: ' + (error as Error).message,
+      position: 'top',
+      timeout: 5000
     })
   }
 }
@@ -176,6 +180,7 @@ const deleteItem = async (id: string) => {
 
 // Carregar itens ao montar o componente
 onMounted(() => {
+  console.log('Componente montado, iniciando carregamento...')
   loadItems()
 })
 </script>
