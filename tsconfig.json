@@ -1,15 +1,20 @@
 {
-  "extends": "./.quasar/tsconfig.json",
+  "extends": "@quasar/app-vite/tsconfig-preset",
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"],
-      "@boot/*": ["./src/boot/*"],
-      "@database/*": ["./src/database/*"],
-      "@models/*": ["./src/database/models/*"],
-      "@utils/*": ["./src/database/utils/*"],
-      "@migrations/*": ["./src/database/migrations/*"]
+      "@/*": ["src/*"],
+      "@boot/*": ["src/boot/*"],
+      "@components/*": ["src/components/*"],
+      "@layouts/*": ["src/layouts/*"],
+      "@pages/*": ["src/pages/*"],
+      "@stores/*": ["src/stores/*"],
+      "@database/*": ["src/database/*"],
+      "@models/*": ["src/database/models/*"],
+      "@utils/*": ["src/database/utils/*"],
+      "@migrations/*": ["src/database/migrations/*"]
     },
+    "typeRoots": ["./node_modules/@types", "./src/types"],
     "types": [
       "node",
       "vite/client",
@@ -20,6 +25,8 @@
   },
   "include": [
     "src/**/*.ts",
+    "src/**/*.d.ts",
+    "src/**/*.tsx",
     "src/**/*.vue",
     "./*.d.ts",
     "./*.ts",

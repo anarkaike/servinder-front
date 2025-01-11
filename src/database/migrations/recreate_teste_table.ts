@@ -1,36 +1,37 @@
 import { Migration } from './Migration.js'
 
-export class CreateTesteTable implements Migration {
-  name = 'create_teste_table'
+export class RecreateTesteTable implements Migration {
+  name = 'recreate_teste_table'
 
   async up(): Promise<string> {
     return `
-      -- Criar a tabela teste se não existir
-      CREATE TABLE IF NOT EXISTS public.teste (
+      -- Remover a tabela existente
+      DROP TABLE IF EXISTS public.teste CASCADE;
+
+      -- Criar a tabela teste
+      CREATE TABLE public.teste (
         id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
         name TEXT NOT NULL,
         email TEXT NOT NULL,
-        created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
-        updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+        created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+        updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
       );
 
       -- Criar função de atualização do updated_at
-      CREATE OR REPLACE FUNCTION update_updated_at_column()
+      CREATE OR REPLACE FUNCTION public.set_current_timestamp_updated_at()
       RETURNS TRIGGER AS $$
       BEGIN
-        IF (TG_OP = 'UPDATE') THEN
-          NEW.updated_at = CURRENT_TIMESTAMP;
-        END IF;
+        NEW.updated_at = now();
         RETURN NEW;
       END;
-      $$ language 'plpgsql';
+      $$ language plpgsql;
 
       -- Criar trigger para atualizar updated_at
-      DROP TRIGGER IF EXISTS update_teste_updated_at ON public.teste;
-      CREATE TRIGGER update_teste_updated_at
+      DROP TRIGGER IF EXISTS set_teste_updated_at ON public.teste;
+      CREATE TRIGGER set_teste_updated_at
         BEFORE UPDATE ON public.teste
         FOR EACH ROW
-        EXECUTE FUNCTION update_updated_at_column();
+        EXECUTE FUNCTION public.set_current_timestamp_updated_at();
 
       -- Habilitar RLS
       ALTER TABLE public.teste ENABLE ROW LEVEL SECURITY;
@@ -64,13 +65,14 @@ export class CreateTesteTable implements Migration {
 
       -- Garantir permissões para usuários autenticados
       GRANT ALL ON public.teste TO authenticated;
+      GRANT USAGE ON SEQUENCE public.teste_id_seq TO authenticated;
     `
   }
 
   async down(): Promise<string> {
     return `
-      DROP TRIGGER IF EXISTS update_teste_updated_at ON public.teste;
-      DROP FUNCTION IF EXISTS update_updated_at_column();
+      DROP TRIGGER IF EXISTS set_teste_updated_at ON public.teste;
+      DROP FUNCTION IF EXISTS public.set_current_timestamp_updated_at();
       DROP TABLE IF EXISTS public.teste;
     `
   }

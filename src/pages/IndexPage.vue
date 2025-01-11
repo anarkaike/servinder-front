@@ -1,7 +1,7 @@
 <template>
   <q-page class="row items-center justify-evenly">
     <div class="col-12 col-md-8 q-pa-md">
-      
+
       <!-- Formulário de Criação -->
       <div class="q-mb-lg">
         <FormWrapper
@@ -55,7 +55,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { Notify } from 'quasar'
-import { Teste } from "@models/Teste";
+import { Teste } from "../database/models/Teste";
 import FormWrapper from '@components/FormWrapper.vue'
 
 interface Item {
@@ -144,7 +144,8 @@ const startEdit = (item: Item) => {
 // Atualizar item
 const updateItem = async (data: typeof editingItem.value) => {
   try {
-    await Teste.update(data.id, data)
+    const { id, name, email } = data
+    await Teste.update(id, { name, email })
     await loadItems()
     editDialog.value = false
     Notify.create({

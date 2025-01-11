@@ -7,7 +7,7 @@ import { AlterAuditsUserId } from './alter_audits_user_id.js'
 import { FixAuthTrigger } from './fix_auth_trigger.js'
 import { VerifyUsersTable } from './verify_users_table.js'
 import { FixUserMetadata } from './fix_user_metadata.js'
-import { CreateTesteTable } from './create_teste_table.js'
+import { RecreateTesteTable } from './recreate_teste_table.js'
 
 export function getMigrations(): Migration[] {
   const migrations = new Map<string, Migration>()
@@ -36,8 +36,8 @@ export function getMigrations(): Migration[] {
   // Corrigir o caminho dos metadados do usuário
   migrations.set('fix_user_metadata', new FixUserMetadata())
 
-  // Criar tabela de teste com RLS
-  migrations.set('create_teste_table', new CreateTesteTable())
+  // Recriar tabela de teste com RLS
+  migrations.set('recreate_teste_table', new RecreateTesteTable())
 
   return Array.from(migrations.values())
 }
