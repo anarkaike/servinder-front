@@ -2,7 +2,7 @@
   <q-layout view="hHh lpR fFf">
 
     <q-header reveal elevated class="bg-primary text-white" height-hint="98">
-      <q-toolbar>
+      <q-toolbar class="d-flex justify-between">
         <header-left />
         <header-center />
         <header-right />
@@ -13,7 +13,6 @@
     <q-drawer show-if-above v-model="leftDrawerOpen" side="left" bordered>
       <!-- drawer content -->
     </q-drawer>
-
     <q-drawer show-if-above v-model="rightDrawerOpen" side="right" bordered>
       <!-- drawer content -->
     </q-drawer>
@@ -23,7 +22,16 @@
       <page-sticky />
     </q-page-container>
 
-    <footer />
+    <q-footer elevated class="bg-grey-8 text-white">
+      <footer-bar />
+      <q-toolbar>
+        <footer-left />
+        <q-toolbar-title class="text-center vertical-middle">
+          <a class="text-white text-small no-underline" target="_blank" href="https://wa.me/551122222222?text=Ol%C3%A1%2C%20tenho%20uma%20d%C3%BAvida%3A">Qualquer dúvida: (11) 97687-1674</a>
+        </q-toolbar-title>
+        <footer-right />
+      </q-toolbar>
+    </q-footer>
 
     <q-ajax-bar
       ref="bar"
@@ -42,7 +50,9 @@ import HeaderRight from "../layouts/MainLayout/HeaderRight.vue";
 import HeaderBar from "../layouts/MainLayout/HeaderBar.vue";
 import HeaderCenter from "../layouts/MainLayout/HeaderCenter.vue";
 import PageSticky from "../layouts/MainLayout/PageSticky.vue";
-import Footer from "../layouts/MainLayout/Footer.vue";
+import FooterLeft from "../layouts/MainLayout/FooterLeft.vue";
+import FooterRight from "../layouts/MainLayout/FooterRight.vue";
+import FooterBar from "../layouts/MainLayout/FooterBar.vue";
 
 const leftDrawerOpen = ref(false)
 const rightDrawerOpen = ref(false)
