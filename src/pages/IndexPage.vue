@@ -21,7 +21,7 @@
             <q-item-label caption>{{ item.email }}</q-item-label>
           </q-item-section>
           <q-item-section side class="flex row items-center no-wrap q-gutter-sm">
-            <q-btn flat round color="primary" icon="zoom_out_map" @click="startView(item)" size="xs" />
+            <q-btn flat round color="primary" icon="zoom_out_map" @click="viewItem(item)" size="xs" />
             <q-btn flat round color="primary" icon="edit" @click="startEdit(item)" size="xs" />
             <q-btn flat round color="primary" icon="delete" @click="deleteItem(item.id)" size="xs" />
           </q-item-section>
