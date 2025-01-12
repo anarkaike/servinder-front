@@ -20,8 +20,10 @@
             <q-item-label>{{ item.name }}</q-item-label>
             <q-item-label caption>{{ item.email }}</q-item-label>
           </q-item-section>
-          <q-item-section side>
-            <q-btn flat round color="primary" icon="edit" @click="startEdit(item)" />
+          <q-item-section side class="flex row items-center no-wrap q-gutter-sm">
+            <q-btn flat round color="primary" icon="zoom_out_map" @click="startView(item)" size="xs" />
+            <q-btn flat round color="primary" icon="edit" @click="startEdit(item)" size="xs" />
+            <q-btn flat round color="primary" icon="delete" @click="deleteItem(item.id)" size="xs" />
           </q-item-section>
         </q-item>
       </q-list>
@@ -177,6 +179,11 @@ const deleteItem = async (id: string) => {
       message: 'Erro ao deletar item'
     })
   }
+}
+
+// Deletar item
+const viewItem = async (item) => {
+  // Ainda falta implementar
 }
 
 // Carregar itens ao montar o componente
