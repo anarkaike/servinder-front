@@ -7,14 +7,21 @@
         <header-center />
         <header-right />
       </q-toolbar>
-      <header-bar />
+      <div class="row items-center justify-between q-px-md">
+        <div class="col-auto">
+          <breadcrumbs :items="breadcrumbItems" />
+        </div>
+        <div class="col-auto">
+          <header-bar :items="items" />
+        </div>
+      </div>
     </q-header>
 
     <q-drawer show-if-above v-model="leftDrawerOpen" side="left" bordered>
-      <!-- drawer content -->
+      <!-- drawer content ESQUERDO -->
     </q-drawer>
     <q-drawer show-if-above v-model="rightDrawerOpen" side="right" bordered>
-      <!-- drawer content -->
+      <!-- drawer content DIREITO -->
     </q-drawer>
 
     <q-page-container>
@@ -46,13 +53,14 @@
 <script setup lang="ts">
 import {ref} from 'vue'
 import HeaderLeft from "../layouts/MainLayout/HeaderLeft.vue";
+import HeaderCenter from "../layouts/MainLayout/HeaderCenter.vue";
 import HeaderRight from "../layouts/MainLayout/HeaderRight.vue";
 import HeaderBar from "../layouts/MainLayout/HeaderBar.vue";
-import HeaderCenter from "../layouts/MainLayout/HeaderCenter.vue";
-import PageSticky from "../layouts/MainLayout/PageSticky.vue";
+import Breadcrumbs from "../layouts/MainLayout/Breadcrumbs.vue";
+import FooterBar from "../layouts/MainLayout/FooterBar.vue";
 import FooterLeft from "../layouts/MainLayout/FooterLeft.vue";
 import FooterRight from "../layouts/MainLayout/FooterRight.vue";
-import FooterBar from "../layouts/MainLayout/FooterBar.vue";
+import PageSticky from "../layouts/MainLayout/PageSticky.vue";
 
 const leftDrawerOpen = ref(false)
 const rightDrawerOpen = ref(false)
@@ -64,6 +72,27 @@ function toggleLeftDrawer() {
 function toggleRightDrawer() {
   rightDrawerOpen.value = !rightDrawerOpen.value
 }
+
+const breadcrumbItems = [
+  { label: 'Home', icon: 'home', to: '/' },
+  { label: 'Dashboard', icon: 'dashboard', to: '/dashboard' },
+  { label: 'Relatórios', icon: 'analytics', to: '/relatorios' }
+]
+
+const items = [
+  {
+    label: 'Home',
+    to: '/'
+  },
+  {
+    label: 'Dashboard',
+    to: '/dashboard'
+  },
+  {
+    label: 'Configurações',
+    to: '/settings'
+  }
+]
 </script>
 
 <style>
